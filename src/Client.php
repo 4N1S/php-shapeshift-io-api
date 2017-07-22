@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Achse\ShapeShiftIo;
 
@@ -48,7 +48,7 @@ class Client
      * @throws RequestFailedException
      * @throws ApiErrorException
      */
-    public function getRate(string $coin1, string $coin2) : string
+    public function getRate(string $coin1, string $coin2): string
     {
         return $this->get(sprintf('%s/%s', Resources::RATE, Tools::buildPair($coin1, $coin2)))->rate;
     }
@@ -63,7 +63,7 @@ class Client
      * @throws RequestFailedException
      * @throws ApiErrorException
      */
-    public function getLimit(string $coin1, string $coin2) : string
+    public function getLimit(string $coin1, string $coin2): string
     {
         return $this->get(sprintf('%s/%s', Resources::LIMIT, Tools::buildPair($coin1, $coin2)))->limit;
     }
@@ -71,14 +71,27 @@ class Client
     /**
      * @see https://info.shapeshift.io/api#api-103
      *
-     * @param string|null $coin1
-     * @param string|null $coin2
      * @return stdClass[]
      *
      * @throws RequestFailedException
      * @throws ApiErrorException
      */
-    public function getMarketInfo(string $coin1 = null, string $coin2 = null) : array
+    public function getWholeMarketInfo(): array
+    {
+        return $this->get(Resources::MARKET_INFO);
+    }
+
+    /**
+     * @see https://info.shapeshift.io/api#api-103
+     *
+     * @param string $coin1
+     * @param string $coin2
+     * @return stdClass
+     *
+     * @throws RequestFailedException
+     * @throws ApiErrorException
+     */
+    public function getMarketInfo(string $coin1, string $coin2): stdClass
     {
         return $this->get(sprintf('%s/%s', Resources::MARKET_INFO, Tools::buildPair($coin1, $coin2)));
     }
@@ -92,7 +105,7 @@ class Client
      * @throws RequestFailedException
      * @throws ApiErrorException
      */
-    public function getRecentTransactionList(int $max) : array
+    public function getRecentTransactionList(int $max): array
     {
         return $this->get(sprintf('%s/%s', Resources::RECENT_TRANSACTIONS, $max));
     }
@@ -106,7 +119,7 @@ class Client
      * @throws RequestFailedException
      * @throws ApiErrorException
      */
-    public function getStatusOfDepositToAddress(string $address) : stdClass
+    public function getStatusOfDepositToAddress(string $address): stdClass
     {
         return $this->get(sprintf('%s/%s', Resources::RECENT_DEPOSIT_TRANSACTION_STATUS, $address));
     }
@@ -120,7 +133,7 @@ class Client
      * @throws RequestFailedException
      * @throws ApiErrorException
      */
-    public function getTimeRemaining(string $address) : int
+    public function getTimeRemaining(string $address): int
     {
         return (int)$this->get(sprintf('%s/%s', Resources::TIME_REMAINING, $address))->seconds_remaining;
     }
@@ -133,7 +146,7 @@ class Client
      * @throws RequestFailedException
      * @throws ApiErrorException
      */
-    public function getSupportedCoins() : stdClass
+    public function getSupportedCoins(): stdClass
     {
         return $this->get(Resources::LIST_OF_SUPPORTED_COINS);
     }
@@ -147,7 +160,7 @@ class Client
      * @throws RequestFailedException
      * @throws ApiErrorException
      */
-    public function getListAOfTransactionsByApiKey(string $apiKey) : array
+    public function getListAOfTransactionsByApiKey(string $apiKey): array
     {
         return $this->get(sprintf('%s/%s', Resources::LIST_OF_TRANSACTIONS_WITH_API_KEY, $apiKey));
     }
@@ -162,7 +175,7 @@ class Client
      * @throws RequestFailedException
      * @throws ApiErrorException
      */
-    public function getTransactionsByOutputAddress(string $address, string $apiKey) : array
+    public function getTransactionsByOutputAddress(string $address, string $apiKey): array
     {
         return $this->get(
             sprintf('%s/%s/%s', Resources::LIST_OF_TRANSACTIONS_WITH_API_KEY_BY_ADDRESS, $address, $apiKey)
@@ -214,7 +227,7 @@ class Client
      * @throws RequestFailedException
      * @throws ApiErrorException
      */
-    public function requestEmailReceipt(string $email, string $transactionId) : void
+    public function requestEmailReceipt(string $email, string $transactionId): void
     {
         $this->post(Resources::REQUEST_RECEIPT, ['email' => $email, 'txid' => $transactionId]);
     }
@@ -271,7 +284,7 @@ class Client
      * @throws RequestFailedException
      * @throws ApiErrorException
      */
-    public function cancelTransaction(string $address) : void
+    public function cancelTransaction(string $address): void
     {
         try {
             $result = $this->post(Resources::CANCEL_PENDING_TRANSACTION, ['address' => $address]);
@@ -294,7 +307,7 @@ class Client
      * @throws RequestFailedException
      * @throws ApiErrorException
      */
-    public function validateAddress(string $address, string $coin) : stdClass
+    public function validateAddress(string $address, string $coin): stdClass
     {
         $result = $this->get(sprintf('%s/%s/%s', Resources::VALIDATE_ADDRESS, $address, $coin));
 

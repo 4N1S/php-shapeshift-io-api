@@ -4,7 +4,7 @@
  * @testCase
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Achse\ShapeShiftIo\Tests;
 
@@ -45,9 +45,23 @@ class ClientTest extends TestCase
         MyAssert::floatAsStringPositive($limit);
     }
 
-    public function testMarketAll()
+    public function testMarket()
     {
-        $marketInfo = (new Client())->getMarketInfo();
+        $coin1 = 'BTC';
+        $coin2 = 'ETH';
+
+        $coinItem = (new Client())->getMarketInfo($coin1, $coin2);
+        $pair = sprintf('%s_%s', $coin1, $coin2);
+        Assert::equal($pair, $coinItem->pair);
+        MyAssert::floatAsStringPositive($coinItem->rate);
+        MyAssert::floatAsStringPositive($coinItem->limit);
+        MyAssert::floatAsStringPositive($coinItem->minimum);
+        MyAssert::floatAsStringPositive($coinItem->minerFee);
+    }
+
+    public function testWholeMarketAll()
+    {
+        $marketInfo = (new Client())->getWholeMarketInfo();
         Assert::true(count($marketInfo) > 0, 'There should be some data');
 
         $pair = sprintf('%s_%s', 'BTC', 'ETH');

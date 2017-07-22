@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Achse\ShapeShiftIo;
 
@@ -39,16 +39,6 @@ class ResultProcessor
     }
 
     /**
-     * @param RequestException $exception
-     * @throws RequestFailedException
-     */
-    public static function handleGuzzleRequestException(RequestException $exception)
-    {
-        $message = sprintf('Request failed due: "%s".', $exception->getMessage());
-        throw new RequestFailedException($message, $exception->getCode(), $exception);
-    }
-
-    /**
      * @param array|stdClass $result
      * @param string $url
      * @throws ApiErrorException
@@ -77,18 +67,6 @@ class ResultProcessor
     }
 
     /**
-     * ShapeShift API does NOT provide 400 status code on error and for some endpoints
-     * can be $result->error success response.
-     *
-     * @param string $url
-     * @return bool
-     */
-    private static function isEndpointOkWithError(string $url) : bool
-    {
-        return Strings::startsWith($url, Resources::VALIDATE_ADDRESS);
-    }
-
-    /**
      * @param stdClass|array $result
      * @return string|stdClass|null
      */
@@ -100,6 +78,28 @@ class ResultProcessor
         }
 
         return $error;
+    }
+
+    /**
+     * ShapeShift API does NOT provide 400 status code on error and for some endpoints
+     * can be $result->error success response.
+     *
+     * @param string $url
+     * @return bool
+     */
+    private static function isEndpointOkWithError(string $url): bool
+    {
+        return Strings::startsWith($url, Resources::VALIDATE_ADDRESS);
+    }
+
+    /**
+     * @param RequestException $exception
+     * @throws RequestFailedException
+     */
+    public static function handleGuzzleRequestException(RequestException $exception)
+    {
+        $message = sprintf('Request failed due: "%s".', $exception->getMessage());
+        throw new RequestFailedException($message, $exception->getCode(), $exception);
     }
 
 }

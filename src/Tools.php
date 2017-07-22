@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Achse\ShapeShiftIo;
 
@@ -26,8 +26,7 @@ class Tools
         string $coin1 = null,
         string $coin2 = null,
         string $mode = self::UPPERCASE
-    ) : string
-    {
+    ): string {
         if (($coin1 === null || $coin2 === null) && $coin1 !== $coin2) {
             throw new LogicException('You must provide both or none of the coins.');
         }
@@ -45,7 +44,7 @@ class Tools
      * @param string $inputJson
      * @return string
      */
-    public static function jsonNumbersToString(string $inputJson) : string
+    public static function jsonNumbersToString(string $inputJson): string
     {
         return Strings::replace($inputJson, "/(\"\w+\":\s*?)(\d+\.?[^,\}]*\b)/imu", '$1"$2"');
     }
